@@ -1,0 +1,110 @@
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+/*/*/*/*/*//*/*/ 【ＧＵＩＬＤ　ＣＯＭＭＡＮＤ】 */*/*/*/*/*/**/*/*/*/*
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+
+2- Filter for ban words that cant be used in Guild name
+3- Finding what perms to give to players (all guilds role will have same perms)
+4- When profile and saving data will be done make sure to add player to that new class guild and make him the owner and add guild name to profile.
+5- Add dall other commands related to guil
+6- Add private option in the slash_command
+
+
+
+
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+/**/*/*/*/*/*/*/*/*/ 【ＤＡＴＡＢＡＳＥ】 */*/*//*/*/*/*/*///*/*/*/*/*
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+
+COMPLETED BUT NOT TESTED --> 1- Make the functions to when program start, it will get the data from the files so we dont have to go there every time
+COMPLETED --> 2- Make a command to close the bot and save every profile and guild by doing so
+3- Add for serialization and deserialization of mailbox for phouse
+4- REMOVAL OF PROFILE_LIST... We are using dict now. SAME WITH GUILD 
+5- Maybe doing some sort of a background task that will save every profile each x(5min?) time OR when on the host server for the bot make sure to save everytime host need to restart if needed ?
+
+
+
+
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+/*/*/*/*/*//*/ 【ＰｏｃｋｅｔＨｏｕｓｅ　ＣＬＡＳＳ】 */*/*/*/*/*/*/*/*
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+
+PROGRESS 50% --> 1- Start brainstorming about what to put in there 
+PROGRESS 50% --> 2 - Make some sort of a draft and implement it in the class (we can always go and change anything we just need a base model)
+COMPLETED --> 3- Add in DATABASE FUNCTIONS --> Save_pockehouse()
+
+
+
+
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+/*/*/*/*/*//*/ 【Ａｔｔｒｉｂｕｔｅｓ　ＣＬＡＳＳ】 */*/*/*/*/*/*/*/*/*
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+1- New class attribute and weapon and armor dont have p_damage and p_defence, etc. Weapon and armor will now have their list of attribute so its easier to create and save 
+2- Add some attribute for potions too and other objects(items) that might need it
+
+
+
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+/*/*/*/*/*/ 【Ｓｐｅｃｉａｌ　Ａｔｔａｃｋ　Ｃｌａｓｓ】 */*/*/*//*/*/*
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+
+1- Weapon can have their own abilities that are gonna be created in this new class. So weapon will have a list of attributes and special attack (wich determine all of is attack move he can do)
+
+
+
+
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+/*/*/*/*/*//*/*/*/ 【ＦＵＮＣＴＩＯＮ】 */*/*/*/*/*/*/*/*/*/*/*/*/*/*
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+
+COMPLETED --> 1- Make a displayItem() function -> will return what to display of an item -> parameters: count: int (nb of item is displaying,,, if 0 rien naffiche pour nb), item: items.Item()
+
+
+
+
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+/*/*/*/*/*//*/*/*/ 【ＣＯＤＩＮＧ　ＩＤＥＡ】 */*/*/*/*/*/*/*/*/*/*/*/
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+1- make the desc in the link of an item u can equip so it will show stats of item and stat of item already equip
+
+
+
+
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+*/**/*/**/*/*//*/ 【ＭＩＮＩＮＧ】 */*/**/*//*/**/*/*/*/*/*/*/*/
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+1- Add perks (Ex: fortune-> give more reward.)
+PROGRESS 50% --> 2- Make refresh and quit button
+3- Add strenght needed to precious stone (Make a class so that item can be precious stone) -> if pickaxe strenght < preciouStone.StrenghtNeeded la pierre ne pourra pas etre miné.
+COMPLETED --> 4- Add that the durability of the tool get reduce by one for every Stone mined
+
+
+
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+*/**/*/**/*/*//*/ 【ＪＵＳＴ　ＩＤＥＡ】 */*/**/*//*/**/*/*/*/*/*/*/*/
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+
+COMPLETED --> - so to equip equipment like weapon or armor , command -> /equip or whatever it give u choiceOption from discord API and all the option are compatible item that can be equip!!!! 
+this mean we can add something  like a charm system or fucking idk like rings, charms, pendentif, collier, L:ETTS FKKK GOOOOOOO
+
+- Try making function in p_house class that can send shit in discord tchat so we dont have to all code it in main... 
+
+- blueprint or enchenting recipe or fodd recipe  will all work this way --> you get recipe or blueprint from somewhere as an item type (blueprint or recipe) and with those 
+    you have 2 actions : 1- Learn (make you be able to craft the item or make the potion or food)   2- Look (tell you the recipe)
+    - that will have the effect that even if you know the recipe or craft for something, you still need to learn it before to be hable to do it.
+
+
+- for traveling arounbd the world you can use instant travel scrolls or mounts or at foot. At foot take a long time, with pets depends on the pets and the distance and the scrolls there is 2 types of them
+        one : travel the precise place, two travel to the place you want(rarest one and cost the most so OP)
+
+
+- When entering a fight all items in inventory that are in usable can be used (keys, potions or idk what ever i decide to add for usable item(ex: blood collecting))
+
+
+
+
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+//*/*/*/*/*/*/ 【ＤＡＩＬＹ　ＲＥＭＩＮＤＥＲＳ】 /**/**//**/**/*/*/*/*
+/*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
+
+AFTER THOSE 2 ABOVE --> START WORKING ON DEV BOT --> this bot will help for making development faster -> Ex: Creation of items, Creation of monster,
+                                                                                                             Creation of dungeon, Creation of quests, Creation of location, etc. (THIS WILL SAVE SO MUCH TIME)

@@ -1,0 +1,33 @@
+{
+    "561423651236757567": {
+        "upgrade": 0,
+        "workbench": false,
+        "cookingStation": false,
+        "alchemyStation": false,
+        "forge": false,
+        "eggIncubator": false,
+        "incubators": [
+            {
+                "egg": {
+                    "item_id": "0001",
+                    "condition": "Perfect"
+                },
+                "active_egg": true,
+                "timeEggReady": "02/05/2022, 00:25:07"
+            }
+        ],
+        "mapReader": false,
+        "enchantingPool": false
+    },
+    "221689857985085440": {
+        "upgrade": 0,
+        "workbench": false,
+        "cookingStation": false,
+        "alchemyStation": false,
+        "forge": false,
+        "eggIncubator": false,
+        "incubators": [],
+        "mapReader": false,
+        "enchantingPool": false
+    }
+}

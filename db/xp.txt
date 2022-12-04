@@ -1,0 +1,42 @@
+{
+    "561423651236757567": {
+        "player": {
+            "lvl": 0,
+            "current_exp": 0,
+            "next_lvl_exp": 100,
+            "max_level": 15
+        },
+        "mining": {
+            "lvl": 0,
+            "current_exp": 0,
+            "next_lvl_exp": 100,
+            "max_level": 60
+        },
+        "fishing": {
+            "lvl": 0,
+            "current_exp": 0,
+            "next_lvl_exp": 100,
+            "max_level": 60
+        }
+    },
+    "221689857985085440": {
+        "player": {
+            "lvl": 0,
+            "current_exp": 0,
+            "next_lvl_exp": 100,
+            "max_level": 15
+        },
+        "mining": {
+            "lvl": 1,
+            "current_exp": 78,
+            "next_lvl_exp": 200,
+            "max_level": 60
+        },
+        "fishing": {
+            "lvl": 0,
+            "current_exp": 0,
+            "next_lvl_exp": 100,
+            "max_level": 60
+        }
+    }
+}

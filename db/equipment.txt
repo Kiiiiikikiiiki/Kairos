@@ -1,0 +1,70 @@
+{
+    "561423651236757567": {
+        "weapon": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "pickaxe": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "axe": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "fishing_rod": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "scythe": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "knife": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "lockpick": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "forge_hammer": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        }
+    },
+    "221689857985085440": {
+        "weapon": {
+            "itemId": "0007",
+            "condition": "Perfect"
+        },
+        "pickaxe": {
+            "itemId": "0010",
+            "condition": "Perfect"
+        },
+        "axe": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "fishing_rod": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "scythe": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "knife": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "lockpick": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "forge_hammer": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        }
+    }
+}

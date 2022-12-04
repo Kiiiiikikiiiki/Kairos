@@ -1,0 +1,18 @@
+{
+    "561423651236757567": {
+        "name": "test",
+        "money": 0,
+        "guild": "Solo-Player",
+        "location": "Did it worked?",
+        "active_quest": [],
+        "requirement": []
+    },
+    "221689857985085440": {
+        "name": "K\u0336\u034b\u035d \u0337\u0304I\u0344\u0351\u034aK\u0335\u0308\u034cI\u0358\u033e\u0342",
+        "money": 0,
+        "guild": "Solo-Player",
+        "location": "EtherCity",
+        "active_quest": [],
+        "requirement": []
+    }
+}

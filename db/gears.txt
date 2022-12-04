@@ -1,0 +1,62 @@
+{
+    "561423651236757567": {
+        "hat": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "chestpiece": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "legspants": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "gloves": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "necklace": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "ring1": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "ring2": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        }
+    },
+    "221689857985085440": {
+        "hat": {
+            "itemId": "0004",
+            "condition": "Perfect"
+        },
+        "chestpiece": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "legspants": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "gloves": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "necklace": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "ring1": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        },
+        "ring2": {
+            "itemId": "0000",
+            "condition": "Perfect"
+        }
+    }
+}
