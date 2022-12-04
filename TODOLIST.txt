@@ -65,7 +65,6 @@ COMPLETED --> 1- Make a displayItem() function -> will return what to display of
 /*/*/*/*/*//*/*/*/ 【ＣＯＤＩＮＧ　ＩＤＥＡ】 */*/*/*/*/*/*/*/*/*/*/*/
 /*/*/*/*/*/**/*/*/*/*/*/*/***/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*
 1- make the desc in the link of an item u can equip so it will show stats of item and stat of item already equip
-2- this is just a test to help with github understanding
 
 
 
