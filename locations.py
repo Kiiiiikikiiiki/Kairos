@@ -1,8 +1,5 @@
-from locationType import LocationType
-
-
 class Location:
-    def __init__(self, name: str, imgLink: str = None, hidden: bool = False, mapId: str = None, type: LocationType = None, coordinate: tuple = None) -> None:
+    def __init__(self, name: str, imgLink: str = None, hidden: bool = False, mapId: str = None, type: str = None, coordinate: tuple = None) -> None:
         self.name = name
         # the map of this location (some location might not have maps tho) Ex: entering a dungeon will just ask you to enter the dongeon but the dongeon will have a map
         self.imgLink = imgLink
@@ -14,6 +11,14 @@ class Location:
         self.type = type
         # coordinate of the location so we can calculate time of travel
         self.coordinate = coordinate
+
+        self.interaction_list = []  # When entering the location this will be the list of possible interaction (object from class Interaction) 
+
+
+    def enter(self):
+        #TODO when entering, show a dropdown menu with the listed interaction. A picture of the location and things to do 
+        # Interactions will be a class with subclass of each possible interaction like talking to this guy, open shop, open forge, etc
+        pass
 
 
 class PointOfInterest:
