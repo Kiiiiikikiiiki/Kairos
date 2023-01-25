@@ -1,10 +1,12 @@
 import items
+import discord.ext.commands.context as context
+from player import Profile
 
 class Shop:
     def __init__(self, buying_items: list[items.Item], selling_items: list[tuple], trading_items: list[tuple]):
         pass
 
-    def interact(self, **kwargs):
+    def interact(self, ctx: context, player: Profile):
         pass
 
 
@@ -18,5 +20,5 @@ class Interaction:
         self.subInteraction = subInteraction
     
 
-    def interact(self, **kwargs):
-        return self.subInteraction.interact(kwargs)
+    def interact(self, ctx: context, player: Profile):
+        return self.subInteraction.interact(ctx, player)
