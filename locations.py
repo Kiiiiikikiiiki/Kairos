@@ -1,6 +1,18 @@
+from discord.ui import Select
+from discord import Interaction
+from functions import MyView
+from interactions import Interaction
+from player import Profile
+from embeds import locationEmbed
+
+
+
 class Location:
-    def __init__(self, name: str, imgLink: str = None, hidden: bool = False, mapId: str = None, type: str = None, coordinate: tuple = None) -> None:
+    def __init__(self, name: str, desc: str, imgLink: str = None, hidden: bool = False, mapId: str = None, type: str = None, coordinate: tuple = None) -> None:
+        # Name of the location
         self.name = name
+        # Description of the location
+        self.desc = desc
         # the map of this location (some location might not have maps tho) Ex: entering a dungeon will just ask you to enter the dongeon but the dongeon will have a map
         self.imgLink = imgLink
         # Does this location is hidden to player without the map for it in their inventory
@@ -12,13 +24,38 @@ class Location:
         # coordinate of the location so we can calculate time of travel
         self.coordinate = coordinate
 
-        self.interaction_list = []  # When entering the location this will be the list of possible interaction (object from class Interaction) 
+        self.interaction_list: list[Interaction] = []  # When entering the location this will be the list of possible interaction (object from class Interaction) 
 
 
-    def enter(self):
+    async def enter(self, player: Profile):
         #TODO when entering, show a dropdown menu with the listed interaction. A picture of the location and things to do 
         # Interactions will be a class with subclass of each possible interaction like talking to this guy, open shop, open forge, etc
-        pass
+        class DropDown(Select):
+            def __init__(self, placeholder: str, min_values: int = 1, max_values: int = 1, disabled: bool = False):
+                super().__init__(placeholder=placeholder, min_values=min_values, max_values=max_values, disabled=disabled)
+            
+
+            async def callback(self, interaction: Interaction):
+                pass
+
+
+        view = MyView() # Make the view
+        dropdown = DropDown(placeholder="Choose an interaction") # Create Dropdown select menu
+
+        # Add option to the select menu and make sure player have requirements to access hidden interactions
+        for i in self.interaction_list:
+            if not i.hidden or i.has_requirements(player=player):
+                    dropdown.add_option(label=i.desc)
+
+        # Add dropdown to the view
+        view.add_item(dropdown)
+
+        # Making the embed for the location 
+        locationEmbed(self.name, self.desc) # TODO add the map of the inside of the location when done making maps
+
+        # Return the view and embed to be showed to the player
+        return view, locationEmbed
+        
 
 
 class PointOfInterest:
