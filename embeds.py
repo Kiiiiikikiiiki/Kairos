@@ -105,3 +105,8 @@ def levelUp_embed(player_name: str, skill_name: str, skill_emoji: str, new_lvl: 
     embed.add_field(name=f"**{skill_emoji}**{skill_name.upper()}", value=f"__Level__ **{new_lvl - 1}** ➡ __Level__ **{new_lvl}**")
 
     return embed
+
+
+def locationEmbed(name: str, description: str):
+    embed = Embed(title=name, description=description)
+    return embed
