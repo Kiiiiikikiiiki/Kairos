@@ -22,6 +22,7 @@ import constant as const
 from db import db_func
 import copy
 import checks
+import locations
 
 bot = discord.Bot()
 
@@ -119,7 +120,7 @@ async def type_v(ctx):
 @bot.slash_command(guild_ids=[933532273825968239], description="This is a test")
 @checks.check_doing_something()
 async def test(ctx):
-    await ctx.respond(embed=embeds.levelUp_embed(player_name="TestName", skill_name="mining", skill_emoji="⛏️", new_lvl=1))
+    await locations.test.enter(player= const.PROFILE_DICT[f'{ctx.author.id}'])
     # await job.testMine.enter(ctx=ctx, equipment=const.PROFILE_DICT[f"{ctx.author.id}"].p_equipment, player=const.PROFILE_DICT[f"{ctx.author.id}"])
     # await ctx.delete()  # delete make it that we dont need a respond
 

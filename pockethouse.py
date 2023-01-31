@@ -14,8 +14,9 @@ class P_house:
         # You have an other inventory
         self.storage: list[items.Item] = []
         self.storage_size = 10
-        # Mailbox (Receive mail items -> messages, items, quests, etc)
-        self.mailbox: mailbox.Mailbox = mailbox.Mailbox()
+
+        # Might add the mailbox in here idk yet
+
         # Upgrade 1:
         # - Unlock Workbench (not implemented)
         self.workbench = False

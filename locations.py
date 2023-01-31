@@ -1,9 +1,10 @@
 from discord.ui import Select
 from discord import Interaction
 from functions import MyView
-from interactions import Interaction
+from interactions import InteractionKairos
 from player import Profile
 from embeds import locationEmbed
+from interactions import testInteractions
 
 
 
@@ -24,7 +25,7 @@ class Location:
         # coordinate of the location so we can calculate time of travel
         self.coordinate = coordinate
 
-        self.interaction_list: list[Interaction] = []  # When entering the location this will be the list of possible interaction (object from class Interaction) 
+        self.interaction_list: list[InteractionKairos] = []  # When entering the location this will be the list of possible interaction (object from class Interaction) 
 
 
     async def enter(self, player: Profile):
@@ -44,8 +45,8 @@ class Location:
 
         # Add option to the select menu and make sure player have requirements to access hidden interactions
         for i in self.interaction_list:
-            if not i.hidden or i.has_requirements(player=player):
-                    dropdown.add_option(label=i.desc)
+            if i.has_requirements is not None or i.has_requirements(player=player):
+                dropdown.add_option(label=i.desc)
 
         # Add dropdown to the view
         view.add_item(dropdown)
@@ -84,3 +85,12 @@ class Continent:
 class Maps:
     imgLink: str = None,
     continentList: list[Continent] = None
+
+
+
+# =============================================================
+# 【Making locations】
+# =============================================================
+
+test = Location("Test", "Test description", type="test", coordinate=(10, 40))
+test.interaction_list = testInteractions

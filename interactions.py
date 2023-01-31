@@ -17,15 +17,15 @@ class Shop:
         pass
 
 
-class Interaction:
-    def __init__(self, description: str, subInteraction: any, hidden: bool = False, requirement: any = None):
+class InteractionKairos:
+    def __init__(self, description: str, subInteraction: any, requirement: any = None):
         '''
         description: Short description of the interaction to show in a dropdown
         subInteraction: The interaction type (ex: shop, talking and forge) so we can interact with the correct interaction
+        requirement: A function that act like a check to know if the player can have access to this interaction
         '''
         self.desc = description
         self.subInteraction = subInteraction
-        self.hidden = hidden
         self.requirement = requirement
     
 
@@ -40,4 +40,15 @@ class Interaction:
         return : True if the player meet all requirements needed. 
         '''
         return self.requirement(player)
+
+
+
+# =======================================================
+# Making the interactions list
+# =======================================================
+testInteract1 = InteractionKairos("Talking to tester", None)
+testInteract2 = InteractionKairos("Access the shop", None)
+testInteract3 = InteractionKairos("Walking to the door back store", None)
+# List
+testInteractions = [testInteract1, testInteract2, testInteract3]
             
