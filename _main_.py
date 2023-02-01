@@ -120,7 +120,7 @@ async def type_v(ctx):
 @bot.slash_command(guild_ids=[933532273825968239], description="This is a test")
 @checks.check_doing_something()
 async def test(ctx):
-    await locations.test.enter(player= const.PROFILE_DICT[f'{ctx.author.id}'])
+    await locations.test.enter(ctx=ctx, player= const.PROFILE_DICT[f'{ctx.author.id}'])
     # await job.testMine.enter(ctx=ctx, equipment=const.PROFILE_DICT[f"{ctx.author.id}"].p_equipment, player=const.PROFILE_DICT[f"{ctx.author.id}"])
     # await ctx.delete()  # delete make it that we dont need a respond
 

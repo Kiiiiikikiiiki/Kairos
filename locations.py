@@ -5,6 +5,7 @@ from interactions import InteractionKairos
 from player import Profile
 from embeds import locationEmbed
 from interactions import testInteractions
+import discord
 
 
 
@@ -28,7 +29,7 @@ class Location:
         self.interaction_list: list[InteractionKairos] = []  # When entering the location this will be the list of possible interaction (object from class Interaction) 
 
 
-    async def enter(self, player: Profile):
+    async def enter(self, ctx: discord.ext.commands.Context, player: Profile):
         #TODO when entering, show a dropdown menu with the listed interaction. A picture of the location and things to do 
         # Interactions will be a class with subclass of each possible interaction like talking to this guy, open shop, open forge, etc
         class DropDown(Select):
@@ -37,7 +38,7 @@ class Location:
             
 
             async def callback(self, interaction: Interaction):
-                pass
+                return None
 
 
         view = MyView() # Make the view
@@ -52,10 +53,10 @@ class Location:
         view.add_item(dropdown)
 
         # Making the embed for the location 
-        locationEmbed(self.name, self.desc) # TODO add the map of the inside of the location when done making maps
+        embed = locationEmbed(self.name, self.desc) # TODO add the map of the inside of the location when done making maps
 
         # Return the view and embed to be showed to the player
-        return view, locationEmbed
+        await ctx.respond(embed=embed, view=view)
         
 
 
