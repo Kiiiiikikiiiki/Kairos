@@ -7,7 +7,7 @@ import discord.ext.tasks
 from discord.ext import commands
 from discord.commands import SlashCommandGroup, Option
 from discord.ui import Button, View
-from dotenv import dotenv_values
+from dotenv import dotenv_values, load_dotenv, find_dotenv
 from discord import Embed, Interaction, OptionChoice, User
 import embeds
 import player
@@ -26,8 +26,8 @@ import locations
 
 bot = discord.Bot()
 
-config = dotenv_values(".env")
 
+config = dotenv_values(find_dotenv())
 # /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
 # /*/*/*/*/*/*/*/*/*/*/*/*/*/*/ BOT EVENTS /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
 
