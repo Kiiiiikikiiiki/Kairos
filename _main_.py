@@ -20,6 +20,7 @@ import gears
 import job
 import constant as const
 from db import db_func
+from newDB import database_func
 import copy
 import checks
 import locations
@@ -46,6 +47,10 @@ async def on_disconnect():
     db_func.save_profile(list(const.PROFILE_DICT.values()))
     db_func.save_phouse(list(const.PROFILE_DICT.values()))
     db_func.save_guild(const.GUILD_LIST)  # need to change fo dict
+
+    # New saving methode
+    database_func.savePlayer(list(const.PROFILE_DICT.values()))
+
 
 
 @bot.event  # **THIS NEED TO BE TESTED**

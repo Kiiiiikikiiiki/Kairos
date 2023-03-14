@@ -117,6 +117,8 @@ def receiveItems(user_id: int, itemList: list[items.Item], plyer: player.Profile
 def getItem(itemId: str):
     '''
     Will deepCopy an item so we dont modify the original item by accident
+    
+    Return : item type object
     '''
     return copy.deepcopy(const.ITEMS_DICT[f'{itemId}'])
 

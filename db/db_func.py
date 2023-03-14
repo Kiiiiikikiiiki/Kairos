@@ -15,10 +15,12 @@ import copy
 from functions import str_date, strDate_to_date
 
 
+folder_before = "Kairos/"   # This is required to change depending on the place where this code is run 
+
 # /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
 # /*/*/*/*/*/*/ SERIALIZATION /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
 def save_profile(profiles_list: list[player.Profile]):
-    with open("db/profiles.txt", 'r') as f:
+    with open(f"{folder_before}db/profiles.txt", 'r') as f:
         profiles_dict = json.load(f)    # Get the oldest data dict
         for profile in profiles_list:
             profiles_dict[f'{profile.profile_id}'] = {
@@ -29,7 +31,7 @@ def save_profile(profiles_list: list[player.Profile]):
                 'active_quest': profile.active_quest,
                 'requirement': profile.requirement
             }
-    with open("db/profiles.txt", 'w') as f:
+    with open(f"{folder_before}db/profiles.txt", 'w') as f:
         json.dump(profiles_dict, f, indent=4)
 
     save_inventory(profiles_list=profiles_list)
@@ -41,7 +43,7 @@ def save_profile(profiles_list: list[player.Profile]):
 
 
 def save_inventory(profiles_list: list[player.Profile]):
-    with open("db/inventory.txt", 'r') as f:
+    with open(f"{folder_before}db/inventory.txt", 'r') as f:
         inv_dict = json.load(f)    # Get the oldest data dict
         for profile in profiles_list:
 
@@ -51,23 +53,23 @@ def save_inventory(profiles_list: list[player.Profile]):
                 "inv_size": profile.inventory.inv_size,
                 "inv": inv
             }
-    with open("db/inventory.txt", 'w') as f:
+    with open(f"{folder_before}db/inventory.txt", 'w') as f:
         json.dump(inv_dict, f, indent=4)
     return True
 
 
 def save_xp(profiles_list: list[player.Profile]):
-    with open("db/xp.txt", 'r') as f:
+    with open(f"{folder_before}db/xp.txt", 'r') as f:
         xp_dict = json.load(f)  # Get the oldest data dict
         for profile in profiles_list:
             xp_dict[f'{profile.profile_id}'] = profile.experience.skills
-    with open("db/xp.txt", 'w') as f:
+    with open(f"{folder_before}db/xp.txt", 'w') as f:
         json.dump(xp_dict, f, indent=4)
     return True
 
 
 def save_guild(guild_list: list[guild.guild]):
-    with open("db/guild.txt", 'r') as f:
+    with open(f"{folder_before}db/guild.txt", 'r') as f:
         guild_dict = json.load(f)   # Get the oldest data dict
         for guild in guild_list:
             guild_dict[f'{guild.name}'] = {
@@ -77,13 +79,13 @@ def save_guild(guild_list: list[guild.guild]):
                 'private': guild.private,
                 'members_rank': guild.members_rank
             }
-    with open("db/guild.txt", 'w') as f:
+    with open(f"{folder_before}db/guild.txt", 'w') as f:
         json.dump(guild_dict, f, indent=4)
     return True
 
 
 def save_phouse(profiles_list: list[player.Profile]):
-    with open("db/pockethouse.txt", 'r') as f:
+    with open(f"{folder_before}db/pockethouse.txt", 'r') as f:
         phouse_dict = json.load(f)  # Get the oldest data dict
         for profile in profiles_list:
             # Incubators saves
@@ -117,7 +119,7 @@ def save_phouse(profiles_list: list[player.Profile]):
                 'mapReader': profile.pockethouse.mapReader,
                 'enchantingPool': profile.pockethouse.enchantingPool
             }
-    with open("db/pockethouse.txt", 'w') as f:
+    with open(f"{folder_before}db/pockethouse.txt", 'w') as f:
         json.dump(phouse_dict, f, indent=4)
 
     save_phouse_storage(profiles_list=profiles_list)
@@ -125,7 +127,7 @@ def save_phouse(profiles_list: list[player.Profile]):
 
 
 def save_phouse_storage(profiles_list: list[player.Profile]):
-    with open("db/pockethouseStorage.txt", 'r') as f:
+    with open(f"{folder_before}db/pockethouseStorage.txt", 'r') as f:
         phouseInv_dict = json.load(f)   # Get the oldest data dict
         for profile in profiles_list:
             inv = getListOfItemToSave(profile.pockethouse.storage)
@@ -133,14 +135,14 @@ def save_phouse_storage(profiles_list: list[player.Profile]):
                 "storage_size": profile.pockethouse.storage_size,
                 "storage": inv
             }
-    with open("db/pockethouseStorage.txt", 'w') as f:
+    with open(f"{folder_before}db/pockethouseStorage.txt", 'w') as f:
         json.dump(phouseInv_dict, f, indent=4)
     return True
 
 
 # not tested
 def save_gears(profiles_list: list[player.Profile]):
-    with open("db/gears.txt", 'r') as f:
+    with open(f"{folder_before}db/gears.txt", 'r') as f:
         gearsDict = json.load(f)    # Get the oldest data dict
         for profile in profiles_list:
             profileGearsDict = {}
@@ -174,14 +176,14 @@ def save_gears(profiles_list: list[player.Profile]):
                 "itemId": ring2.item_id, "condition": ring2.condition}
 
             gearsDict[f"{profile.profile_id}"] = profileGearsDict
-    with open("db/gears.txt", 'w') as f:
+    with open(f"{folder_before}db/gears.txt", 'w') as f:
         json.dump(gearsDict, f, indent=4)
     return True
 
 
 # not tested
 def save_equipment(profile_list: list[player.Profile]):
-    with open("db/equipment.txt", 'r') as f:
+    with open(f"{folder_before}db/equipment.txt", 'r') as f:
         equipmentDict = json.load(f)    # Get the oldest data dict
         for profile in profile_list:
             profileEquipDict = {}
@@ -220,14 +222,14 @@ def save_equipment(profile_list: list[player.Profile]):
 
             equipmentDict[f"{profile.profile_id}"] = profileEquipDict
 
-    with open("db/equipment.txt", 'w') as f:
+    with open(f"{folder_before}db/equipment.txt", 'w') as f:
         json.dump(equipmentDict, f, indent=4)
     return True
 
 
 # not tested
 def save_currentAction(profile_list: list[player.Profile]):
-    with open("db/currentAction.txt", "r") as f:
+    with open(f"{folder_before}db/currentAction.txt", "r") as f:
         currentAction_dict = json.load(f)
 
         for profile in profile_list:
@@ -254,7 +256,7 @@ def save_currentAction(profile_list: list[player.Profile]):
                 "rewards": rewards,
                 "xp_rewards": profile.current_Action["xp_rewards"]
             }
-    with open("db/currentAction.txt", "w") as f:
+    with open(f"{folder_before}db/currentAction.txt", "w") as f:
         json.dump(currentAction_dict, f, indent=4)
     return True
 
@@ -305,7 +307,7 @@ def jsonItemTo_object(itemId: str, condition: str):
 
 
 def deserialize_profile():
-    with open("db/profiles.txt", 'r') as f:
+    with open(f"{folder_before}db/profiles.txt", 'r') as f:
         profiles_dict = json.load(f)
         for p_id, p_info in profiles_dict.items():
             profile_id = p_id
@@ -331,7 +333,7 @@ def deserialize_profile():
 
 
 def deserialize_inventory(profile_id: str):
-    with open("db/inventory.txt", 'r') as f:
+    with open(f"{folder_before}db/inventory.txt", 'r') as f:
         inv_dict = json.load(f)    # Get the oldest data dict
         # Get inventory for the selected player
         profile_inv_dict = inv_dict.get(profile_id)
@@ -342,7 +344,7 @@ def deserialize_inventory(profile_id: str):
 
 
 def deserialize_gears(profile_id: str):
-    with open("db/gears.txt", 'r') as f:
+    with open(f"{folder_before}db/gears.txt", 'r') as f:
         gearsDict = json.load(f)
         # Get gears for the selected player
         profileGears = gearsDict.get(profile_id)
@@ -367,7 +369,7 @@ def deserialize_gears(profile_id: str):
 
 
 def deserialize_equipment(profile_id: str):
-    with open("db/equipment.txt", "r") as f:
+    with open(f"{folder_before}db/equipment.txt", "r") as f:
         equipDict = json.load(f)
         # Get equipments for the selected player
         profileEquipment = equipDict.get(profile_id)
@@ -395,7 +397,7 @@ def deserialize_equipment(profile_id: str):
 
 # Not tested
 def deserialize_currentAction(profile_id: str):
-    with open("db/currentAction.txt", "r") as f:
+    with open(f"{folder_before}db/currentAction.txt", "r") as f:
         currentAction_dict = json.load(f)
         profile_currentAction = currentAction_dict.get(profile_id)
 
@@ -423,7 +425,7 @@ def deserialize_currentAction(profile_id: str):
 
 
 def deserialize_xp(profile_id: str):
-    with open("db/xp.txt", 'r') as f:
+    with open(f"{folder_before}db/xp.txt", 'r') as f:
         xp_dict = json.load(f)
         # Get xp for the selected player
         profile_xp_dict = xp_dict.get(profile_id)
@@ -438,7 +440,7 @@ def deserialize_guild():
 
 
 def deserialize_phouse(profile_id: str):
-    with open("db/pockethouse.txt", 'r') as f:
+    with open(f"{folder_before}db/pockethouse.txt", 'r') as f:
         phouse_dict = json.load(f)  # Get the oldest data dict
         # Get phouse for the selected player
         profile_phouse_dict = phouse_dict.get(profile_id)
@@ -479,7 +481,7 @@ def deserialize_phouse(profile_id: str):
 
 
 def deserialize_phouse_storage(profile_id: str):
-    with open("db/pockethouseStorage.txt", 'r') as f:
+    with open(f"{folder_before}db/pockethouseStorage.txt", 'r') as f:
         storage_dict = json.load(f)    # Get the oldest data dict
         # Get storage for the selected player
         phouse_storage_dict = storage_dict.get(profile_id)
