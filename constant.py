@@ -1,4 +1,4 @@
-import player
+import playerFiles.player
 import guild
 import items
 
@@ -33,7 +33,7 @@ HEX_BY_COLOR_NAME = {
 
 
 # /*/*/*/*//*/*/*/*/*/*/*/* BIG DATA LIST TO FILL UP AT START /*/**/*/*/*/*/*/*/**/*/*/*/*/
-PROFILE_LIST: list[player.Profile] = []
+PROFILE_LIST: list[playerFiles.player.Profile] = []
 PROFILE_DICT: dict = {}
 
 GUILD_LIST: list[guild.guild] = []

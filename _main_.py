@@ -10,13 +10,13 @@ from discord.ui import Button, View
 from dotenv import dotenv_values, load_dotenv, find_dotenv
 from discord import Embed, Interaction, OptionChoice, User
 import embeds
-import player
+import playerFiles.player as player
 import pockethouse
 import incubator
 import items
-import inventory
+import playerFiles.inventory as inventory
 import functions
-import gears
+import playerFiles.gears as gears
 import job
 import constant as const
 from db import db_func

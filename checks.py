@@ -1,4 +1,4 @@
-from player import Profile 
+from playerFiles.player import Profile 
 from discord.ext import commands
 from constant import PROFILE_DICT
 

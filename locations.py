@@ -2,7 +2,7 @@ from discord.ui import Select
 from discord import Interaction
 from functions import MyView
 from interactions import InteractionKairos
-from player import Profile
+from playerFiles.player import Profile
 from embeds import locationEmbed
 from interactions import testInteractions
 import discord

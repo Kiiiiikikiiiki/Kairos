@@ -1,6 +1,6 @@
 import items
 import discord.ext.commands.context as context
-from player import Profile
+from playerFiles.player import Profile
 
 class Shop:
     def __init__(self, buying_items: list[items.Item], selling_items: list[tuple], trading_items: list[tuple]):

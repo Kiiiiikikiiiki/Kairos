@@ -1,14 +1,14 @@
 import pockethouse as ph
-import inventory as inv
-import xp
-import gears
-import equipment
+import playerFiles.inventory as inv
+import playerFiles.xp as xp
+import playerFiles.gears as gears
+import playerFiles.equipment as equipment
 from datetime import datetime
 import functions
 
 
 class Profile:
-    def __init__(self, name: str, profile_id: str, pockethouse: ph.P_house = ph.P_house(), inventory: inv.Inventory = inv.Inventory(), p_gears: gears.Gears = gears.Gears(),
+    def __init__(self, name: str, profile_id: str, pockethouse: ph.P_house = ph.P_house(), inventory: inv.Inventory = inv.Inventory([]), p_gears: gears.Gears = gears.Gears(),
                  p_equipment: equipment.Equipment = equipment.Equipment(),
                  money: float = 0, experience: xp.exp = xp.exp(), guild: str = "Solo-Player", location: str = "EtherCity",
                  current_Action: dict = {"action": "None", "finish_time": None, "rewards": None, "xp_rewards": []}):

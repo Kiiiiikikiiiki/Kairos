@@ -34,7 +34,7 @@ class Key:
 
 
 class Crate:
-    def __init__(self, name: str = "", item_list: list = [], config: dict = {}, info: str = ""):
+    def __init__(self, item_list: list, name: str = "", config: dict = None, info: str = ""):
         self.name = name
         self.item_list = item_list
         self.config = config

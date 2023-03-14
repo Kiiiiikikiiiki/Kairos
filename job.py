@@ -1,8 +1,8 @@
 from dis import dis
 from time import time
-from equipment import Equipment
+from playerFiles.equipment import Equipment
 from items import Item, noneItem
-import player
+import playerFiles.player as player
 import discord
 import constant as const
 from functions import getCurrentActionView, getItem, MyView, addItemToInv, getReward, getXpReward

@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from email.policy import default
 import constant as const
-import player
+import playerFiles.player as player
 import items
 import discord
 import discord.ext.commands

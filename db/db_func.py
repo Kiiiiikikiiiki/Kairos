@@ -1,21 +1,21 @@
 import json
 from datetime import datetime
 import profile
-import player
+import playerFiles.player as player
 import guild
-import inventory
+import playerFiles.inventory as inventory
 import items
 import pockethouse
-import xp
+import playerFiles.xp as xp
 import incubator
-import gears
-import equipment
+import playerFiles.gears as gears
+import playerFiles.equipment as equipment
 import constant as const
 import copy
 from functions import str_date, strDate_to_date
 
 
-folder_before = "Kairos/"   # This is required to change depending on the place where this code is run 
+folder_before = ""   # This is required to change depending on the place where this code is run 
 
 # /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
 # /*/*/*/*/*/*/ SERIALIZATION /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
@@ -337,7 +337,7 @@ def deserialize_inventory(profile_id: str):
         inv_dict = json.load(f)    # Get the oldest data dict
         # Get inventory for the selected player
         profile_inv_dict = inv_dict.get(profile_id)
-        new_inv = inventory.Inventory()
+        new_inv = inventory.Inventory([])
         new_inv.inv_size = profile_inv_dict["inv_size"]
         new_inv.inv = jsonItemsTo_object(profile_inv_dict["inv"])
     return new_inv

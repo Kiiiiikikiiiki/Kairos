@@ -7,7 +7,7 @@ import discord
 import discord.ext.commands
 import functions
 from items import Item
-from player import Profile
+from playerFiles.player import Profile
 
 
 # /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/

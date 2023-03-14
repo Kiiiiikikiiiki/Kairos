@@ -1,5 +1,5 @@
 import sqlite3
-import player, inventory, items, functions
+import playerFiles.player as player, playerFiles.inventory as inventory, items, functions
 import constant as const
 import copy
 
@@ -10,7 +10,7 @@ import copy
 # tuto link : 
 
 # Creating a connection
-conn = sqlite3.connect('Kairos/newDB/database.db')
+conn = sqlite3.connect('newDB/database.db')
 
 # Creating  the cursor
 cur = conn.cursor()
@@ -59,7 +59,7 @@ print(result)
 conn.commit()
 
 # No more testing here
-folder_before = "Kairos/"
+folder_before = ""
 
 # Constant querries
 CREATE_PLAYER = """ CREATE TABLE IF NOT EXISTS players(
