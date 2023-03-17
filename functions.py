@@ -12,13 +12,15 @@ from random import choice
 import embeds
 
 
+
+# TODO We need to rework this cause now that there is no inventory limit, we will need to make sure items are seperated in pages 
 def getItemsFromInv(profile_id: str):
     """
     :return: itemsString(1) -> List in string of non-usable items
              usablesItemsString(2) -> List in string of usable items
     """
     plyer: player.Profile = const.PROFILE_DICT[f'{profile_id}']
-    inv: list[items.Item] = plyer.inventory.inv
+    inv: list[items.Item] = [x['item'] for x in plyer.inventory.inv]
     itemsString = ""            # the items string that will be return at the end
     usablesItemsString = ""     # the usables items string that will be return at the end
 
@@ -41,27 +43,6 @@ def getItemsFromInv(profile_id: str):
     return itemsString, usablesItemsString
 
 
-def addItemToInv(item: items.Item, plyer: player.Profile, nbOfThatItem: int):
-    itemNameList = []
-    for i in plyer.inventory.inv:
-        itemNameList.append(i.simple_name)
-    if plyer.inventory.currentInvSize() < plyer.inventory.inv_size or item.simple_name in list(map(lambda x: x.simple_name, plyer.inventory.inv)):
-        cpt = 0
-        while (cpt < nbOfThatItem):
-            plyer.inventory.inv.append(item)
-            print(item, item.item_id)
-            cpt += 1
-        return True
-    return False
-
-
-def itemToInv(player: player.Profile, item: items.Item, nbOfItem: int):
-    cpt = 0
-    while (cpt < nbOfItem):
-        player.inventory.inv.append(item)
-        cpt += 1
-
-
 # Receive item function with button and view
 class MyView(View):
     def __init__(self, timeout: float = 400):
@@ -69,49 +50,6 @@ class MyView(View):
 
     async def on_timeout(self):
         self.stop()
-
-
-def receiveItems(user_id: int, itemList: list[items.Item], plyer: player.Profile, ctx: discord.ext.commands.Context):
-    """
-    :return: finalMsg(1) -> the message to send
-             view(2)     -> the view with button to add with the finalMsg
-    """
-
-    class ItemButton(Button):
-        def __init__(self, label, item: items.Item, plyer: player.Profile, user_id: int, ctx: discord.ext.commands.Context, nbOfItem):
-            super().__init__(style=discord.ButtonStyle.gray, label=label, disabled=False)
-            self.user_id = user_id
-            self.ctx = ctx
-            self.item = item
-            self.plyer = plyer
-            self.nbOfItem = nbOfItem
-
-        async def callback(self, interaction: Interaction):
-            if interaction.user.id == self.user_id:
-                if addItemToInv(item=self.item, plyer=self.plyer, nbOfThatItem=self.nbOfItem):
-                    self.disabled = True
-                    await interaction.response.edit_message(view=view)
-                else:
-                    await self.ctx.respond("Not enough space in your inventory", ephemeral=True)
-
-    seenItem = []
-    itemIdList = []
-    itemListStr = ""
-    view = MyView()
-    for i in itemList:
-        itemIdList.append(i.item_id)
-    for i in itemList:
-        if i.simple_name not in seenItem:
-            nbOfThatItem = itemIdList.count(i.item_id)
-            itemListStr += f"[`{i.name} [{nbOfThatItem}]`]({const.URL} '{i.desc}') | "
-            seenItem.append(i.simple_name)
-            view.add_item(ItemButton(label=i.name, item=i, plyer=plyer,
-                                     user_id=user_id, ctx=ctx, nbOfItem=nbOfThatItem))
-
-    finalEmbed = discord.Embed(
-        title=">>> You received", description=itemListStr)
-
-    return finalEmbed, view
 
 
 def getItem(itemId: str):
@@ -150,39 +88,39 @@ def Equipment_Gears_Action(plyer: player.Profile, ctx: discord.ext.commands.Cont
                 if self.isRemove:
                     removeItem = self.player.p_gears.remove(
                         selectItem.armor.type)
-                    self.player.inventory.inv.append(removeItem)
+                    self.player.inventory.add_items([{'item': removeItem, 'nb': 1}])
                     newContent = f"**{selectItem.name}** has been added to your inventory!"
                 else:
                     replaceItem: items.Item = None
-                    for i in self.player.inventory.inv:
+                    for i in [i['item'] for i in self.player.inventory.inv]: # Will loop only the item in the inventory 
                         if i.name == selectItem.name:
                             replaceItem = i
                             break
                     removeItem = self.player.p_gears.replace(
                         replaceItem, replaceItem.armor.type)
-                    self.player.inventory.inv.remove(replaceItem)
+                    self.player.inventory.remove_items([{'item': replaceItem, 'nb': 1}])
                     newContent = f"**{selectItem.name}** has been added to your gears!"
                     if not removeItem.item_id == items.noneItem.item_id:
-                        self.player.inventory.inv.append(removeItem)
+                        self.player.inventory.add_items([{'item': removeItem, 'nb': 1}])
                         newContent += f"\n**{removeItem.name}** has been added to your inventory!"
             else:
                 if self.isRemove:
                     removeItem = self.player.p_equipment.remove(
                         selectItem.tool.type)
-                    self.player.inventory.inv.append(removeItem)
+                    self.player.inventory.add_items([{'item': removeItem, 'nb': 1}])
                     newContent = f"**{selectItem.name}** has been added to your inventory!"
                 else:
                     replaceItem: items.Item = None
-                    for i in self.player.inventory.inv:
+                    for i in [i['item'] for i in self.player.inventory.inv]:
                         if i.name == selectItem.name:
                             replaceItem = i
                             break
                     removeItem = self.player.p_equipment.replace(
                         replaceItem, replaceItem.tool.type)
-                    self.player.inventory.inv.remove(replaceItem)
+                    self.player.inventory.remove_items([{'item': replaceItem, 'nb': 1}])
                     newContent = f"**{selectItem.name}** has been added to your equipments!"
                     if not removeItem.item_id == items.noneItem.item_id:
-                        self.player.inventory.inv.append(removeItem)
+                        self.player.inventory.add_items([{'item': removeItem, 'nb': 1}])
                         newContent += f"\n**{removeItem.name}** has been added to your inventory!"
 
             # /*/**/*/*/*/*/*/*/*/*/*/*/*/*/**/*/*/*/*/*//*//
@@ -306,36 +244,29 @@ def getCurrentActionView(as_reward: bool, as_action: bool, player: player.Profil
                     cleanItems = get_cleanItemList(
                         itemList=player.current_Action["rewards"])
 
-                    # Make the check to know if inventory as enough place
-                    has_place, slot = check_as_place_inInv(
-                        cleanItems, player=player)
-                    if has_place:
-                        for v1, v2 in cleanItems:   # v1 = item object, v2 = nb of that item
-                            # Add the item to the player inevntory
-                            itemToInv(player=player, item=v1, nbOfItem=v2)
-                            content += f"\n**{v1.name} x{v2}** has been added to your inventory!"
+                    for item, nb in cleanItems:   # v1 = item object, v2 = nb of that item
+                        # Add the item to the player inevntory
+                        player.inventory.add_items([{'item': item, 'nb': nb}])
+                        content += f"\n**{item.name} x{nb}** has been added to your inventory!"
 
-                        # Experience reward text & player receiving their xp rewards
-                        for xp_type, xp in player.current_Action.get("xp_rewards"):
-                            isLeveling, embed = player.experience.addXp(xp_type=xp_type, amountXp=xp, player_name=player.name)
-                            content += f"\nYou have received **{xp}** experience point in **{xp_type}**!"
-                            if isLeveling:
-                                await interaction.response.send_message(embed=embed)
+                    # Experience reward text & player receiving their xp rewards
+                    for xp_type, xp in player.current_Action.get("xp_rewards"):
+                        isLeveling, embed = player.experience.addXp(xp_type=xp_type, amountXp=xp, player_name=player.name)
+                        content += f"\nYou have received **{xp}** experience point in **{xp_type}**!"
+                        if isLeveling:
+                            await interaction.response.send_message(embed=embed)
 
-                        # Send information in the tchat to the player about what he got
-                        if not isLeveling:
-                            await interaction.response.send_message(content=content, ephemeral=True)
-                        else:
-                            await interaction.followup.send(content=content, ephemeral=True)
-
-                        # reset the player to doing nothing.
-                        player.resetCurrentAction()
-                        await interaction.followup.edit_message(message_id=interaction.message.id, view=getCurrentActionView(False, False, player=player),
-                                                                embed=embeds.getCurrentActionEmbed(ctx=None, action="None", time_until_ready=None,
-                                                                                                   player_name=player.name))
+                    # Send information in the tchat to the player about what he got
+                    if not isLeveling:
+                        await interaction.response.send_message(content=content, ephemeral=True)
                     else:
-                        await interaction.response.send_message(embed=embeds.missingPlaceInInv_Embed(missing_slot=slot), ephemeral=True)
-                        await interaction.followup.edit_message(message_id=interaction.message.id, view=view)
+                        await interaction.followup.send(content=content, ephemeral=True)
+
+                    # reset the player to doing nothing.
+                    player.resetCurrentAction()
+                    await interaction.followup.edit_message(message_id=interaction.message.id, view=getCurrentActionView(False, False, player=player),
+                                                            embed=embeds.getCurrentActionEmbed(ctx=None, action="None", time_until_ready=None,
+                                                                                                player_name=player.name))
 
                 case "Cancel action":
                     await interaction.response.send_modal(Modal(title="Confirm your choice"))
@@ -407,20 +338,3 @@ def skillProgress(current_exp: int, next_levl_exp: int):
 ###################################################################
 # CHECK FUNCTIONS   # DO NOT USE THIS !! PLEASE NOW USE THE FILE FOR CHECKS <3
 ###################################################################
-
-def check_as_place_inInv(itemList: list[tuple], player: player.Profile):
-    '''
-    A check to know if all the items that are about the be added to the player inventory can be indeed be added.
-    return bool & how many missing slot
-    '''
-    missing_slot = 0
-    for i in itemList:
-        if player.inventory.currentInvSize() < player.inventory.inv_size or i[0].simple_name in list(map(lambda x: x.simple_name, player.inventory.inv)):
-            pass
-        else:
-            missing_slot += 1
-
-    if missing_slot > 0:
-        return False, missing_slot
-    else:
-        return True, 0

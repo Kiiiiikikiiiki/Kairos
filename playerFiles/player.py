@@ -41,7 +41,7 @@ class Profile:
         Return a list of gears name that the player has in is inventory
         '''
         gearsList: list[str] = []
-        for i in self.inventory.inv:
+        for i in [i['item'] for i in self.inventory.inv]:
             if i.is_armor:
                 gearsList.append(i.name)
         return gearsList
@@ -82,7 +82,7 @@ class Profile:
         Return a list of equipment name that the player has in is inventory
         '''
         equipmentsList: list[str] = []
-        for i in self.inventory.inv:
+        for i in [i['item'] for i in self.inventory.inv]:
             if i.is_tool:
                 equipmentsList.append(i.name)
         return equipmentsList

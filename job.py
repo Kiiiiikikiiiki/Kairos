@@ -5,7 +5,7 @@ from items import Item, noneItem
 import playerFiles.player as player
 import discord
 import constant as const
-from functions import getCurrentActionView, getItem, MyView, addItemToInv, getReward, getXpReward
+from functions import getCurrentActionView, getItem, MyView, getReward, getXpReward
 from discord import Button, Emoji, Interaction
 from datetime import datetime, timedelta
 import embeds

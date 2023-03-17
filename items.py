@@ -86,6 +86,14 @@ class Item:
         self.crate = crate
         self.tool = tool
 
+    
+    def __eq__(self, __o: object) -> bool:  #TODO test
+        if self.__class__ is __o.__class__:
+            return (self.item_id, self.condition) == (__o.item_id, __o.condition)
+        else:
+            return NotImplemented
+
+
     def display(self, nbOfItem: int = 0):
         url = "https://www.google.com/"
         if nbOfItem == 0:

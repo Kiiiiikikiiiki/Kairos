@@ -49,7 +49,7 @@ async def on_disconnect():
     db_func.save_guild(const.GUILD_LIST)  # need to change fo dict
 
     # New saving methode
-    database_func.savePlayer(list(const.PROFILE_DICT.values()))
+    database_func.savePlayers(list(const.PROFILE_DICT.values()))
 
 
 
@@ -112,20 +112,29 @@ def has_equip_on_him(ctx):
 @bot.slash_command(guild_ids=[933532273825968239])
 async def type_v(ctx):
     await ctx.respond(f"{type(discord.Colour(0xff0000))}")
-    plyer: player.Profile = const.PROFILE_DICT[f'{ctx.author.id}']
-    plyer.inventory.inv.append(const.ITEMS_DICT['0001'])
-    plyer.inventory.inv.append(const.ITEMS_DICT['0002'])
-    plyer.inventory.inv.append(const.ITEMS_DICT['0002'])
-    plyer.inventory.inv.append(const.ITEMS_DICT['0003'])
-    plyer.inventory.inv.append(const.ITEMS_DICT['0003'])
-    plyer.inventory.inv.append(const.ITEMS_DICT['0003'])
-    plyer.inventory.inv.append(functions.getItem("0010"))
+    # plyer: player.Profile = const.PROFILE_DICT[f'{ctx.author.id}']
+    # plyer.inventory.inv.append(const.ITEMS_DICT['0001'])
+    # plyer.inventory.inv.append(const.ITEMS_DICT['0002'])
+    # plyer.inventory.inv.append(const.ITEMS_DICT['0002'])
+    # plyer.inventory.inv.append(const.ITEMS_DICT['0003'])
+    # plyer.inventory.inv.append(const.ITEMS_DICT['0003'])
+    # plyer.inventory.inv.append(const.ITEMS_DICT['0003'])
+    # plyer.inventory.inv.append(functions.getItem("0010"))
 
 
 @bot.slash_command(guild_ids=[933532273825968239], description="This is a test")
 @checks.check_doing_something()
 async def test(ctx):
-    await locations.test.enter(ctx=ctx, player= const.PROFILE_DICT[f'{ctx.author.id}'])
+    testPlayer = player.Profile("TestPlayer", "00000000000")
+    testPlayer.inventory.add_items([{'item': items.test1, 'nb': 2}], testPlayer)
+    print(testPlayer.inventory.inv[0]['item'].simple_name)
+    print(testPlayer.inventory.inv[0]['nb'])
+
+    # testing check_item
+    print('Doe\'s it have enought item ?')
+    print(testPlayer.inventory.check_item(items.test1, 5))
+
+    # await locations.test.enter(ctx=ctx, player= const.PROFILE_DICT[f'{ctx.author.id}'])
     # await job.testMine.enter(ctx=ctx, equipment=const.PROFILE_DICT[f"{ctx.author.id}"].p_equipment, player=const.PROFILE_DICT[f"{ctx.author.id}"])
     # await ctx.delete()  # delete make it that we dont need a respond
 
@@ -144,11 +153,8 @@ async def botclose(ctx):
 
 @bot.slash_command(name="give", guild_ids=[933532273825968239], descripion="give an item to a player")
 @is_guild_admin()
-async def give(ctx, user: discord.User, item_id: str):
-    finalEmbed, view = functions.receiveItems(user.id, [copy.deepcopy(
-        const.ITEMS_DICT[f'{item_id}'])], const.PROFILE_DICT[f'{user.id}'], ctx=ctx)
-    await user.send(embed=finalEmbed, view=view)
-    await ctx.delete()
+async def give(ctx, user: discord.User, item_id: str, nb_of_item):
+    pass
 
 # /*/*/*/*/*/*/*/*/*/*/*/**/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
 # /*/*/*/*/*/ Guild Group Command /*/*/*/*/*/*/*/*/*/*/*/

@@ -74,7 +74,7 @@ CREATE_PLAYER = """ CREATE TABLE IF NOT EXISTS players(
 """
 
 # Serialisation
-def savePlayer(player_list: list[player.Profile]):
+def savePlayers(player_list: list[player.Profile]):
     conn = sqlite3.connect(f"{folder_before}newDB/players.db")
 
     cur = conn.cursor() # Creating the cursor
@@ -92,36 +92,34 @@ def savePlayer(player_list: list[player.Profile]):
         requirements = ','.join(p.requirement) # Listing the requirements in a string to save the data
         cur.execute("INSERT INTO players VALUES(?, ?, ?, ?, ?, ?, ?);", [p.profile_id, p.name, p.money, p.location,
                                                                           p.guild, activeQuest, requirements])
+
+        # Save the player inventory
+        saveInventory(p)
     
     conn.commit()
 
 
-def saveInventory(player_list: list[player.Profile]):
+def saveInventory(profile: player.Profile):
     conn = sqlite3.connect(f"{folder_before}newDB/inventories.db") # Connecting to db
 
     cur = conn.cursor() # Creating the curso
 
-    for p in player_list:
-        # Delete table if player had already saved before
-        cur.execute(f"""DROP TABLE IF EXISTS {p.profile_id}""")
+    # Delete table if player had already saved before
+    cur.execute(f"DROP TABLE IF EXISTS a{profile.profile_id}")
 
-        # Re-create the table to re-populate it 
-        cur.execute(f""" CREATE TABLE {p.profile_id}(
-        itemID TEXT PRIMARY KEY,
-        condition TEXT,
-        nb INT
-        modifier TEXT
-        );""")
+    # Re-create the table to re-populate it 
+    cur.execute(f""" CREATE TABLE a{profile.profile_id}(
+    itemID TEXT PRIMARY KEY,
+    condition TEXT,
+    nb INT,
+    modifier TEXT
+    );""")
 
-        # Insert new data in their respective table
-        duplicate = []
-        itemsTuple = list(map(lambda x: (x.item_id, x.condition), p.inventory.inv)) # List of the items with their id and their condition
-        for item in p.inventory.inv:
-            if (item.item_id, item.condition) not in duplicate:
-                nb = itemsTuple.count((item.item_id, item.condition)) # Number of occurence the player as this item 
-                cur.execute(f"INSERT INTO {p.profile_id} VALUES(?, ?, ?, ?);", [item.item_id, item.condition, nb, None])
-                duplicate.append((item.item_id, item.condition))
-
+    # Insert new data in their respective table
+    for item in profile.inventory.inv:
+        cur.execute(f"INSERT INTO a{profile.profile_id} VALUES(?, ?, ?, ?);", [item['item'].item_id, item["item"].condition, item['nb'], None])
+    
+    conn.commit()
 
 
 
@@ -151,7 +149,7 @@ def loadInventory(profile_id: str):
 
     inv = cur.fetchall()
 
-    new_inv = inventory.Inventory()
+    new_inv = inventory.Inventory([])
     for item in inv:
         # Make new function that take an sql item to the item object
         pass
