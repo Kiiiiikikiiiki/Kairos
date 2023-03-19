@@ -7,18 +7,6 @@ class Inventory:
         self.inv_size = inv_size
 
 
-    def currentInvSize(self):
-        '''
-        Know to current size of the player inventory (how mamy slots)
-        '''
-        # List of item without duplicate to know how many slot the player is using
-        noDuplicateInv = []
-        for i in self.inv:
-            if i.simple_name not in noDuplicateInv:
-                noDuplicateInv.append(i.simple_name)
-        return len(noDuplicateInv)
-
-
     def add_items(self, items: list[dict], player: any):
         '''
         Add item(s) to the current inventory
@@ -51,20 +39,31 @@ class Inventory:
         saveInventory(profile=player)
 
 
-    def remove_items(self, items: list[dict]):
+    def remove_items(self, items: list[dict], player: any):
         '''
         Remove item(s) from the current inventory
         The list must contain dicts that are formated that way : 
             {'item': itemObject,
              'nb': number of the item that is being remove to the inventory}
+
+        Parameters
+        ----------
+        items: list[dict{'item': Item, 'nb': Number of that item}]
+        player : Profile class object
+            Is set to any to avoid circular import in the inventory file
         '''
         for item in items:
-            varBool, index = self.find_item(item['item']) # Find where the item is in the inventory
-            remaining = self.inv[index]['nb'] - item['nb'] # Get the remaining of the item and if 0 will completly delete the item from inventory
-            if remaining == 0:
-                self.inv.pop(index)
-            else:
-                self.inv[index]['nb'] = remaining
+            index = self.find_item(item['item']) # Find where the item is in the inventory
+            if index is not None:
+                remaining = self.inv[index]['nb'] - item['nb'] # Get the remaining of the item and if 0 will completly delete the item from inventory
+                if remaining == 0:
+                    self.inv.pop(index)
+                else:
+                    self.inv[index]['nb'] = remaining
+        
+        # Save inventory
+        from newDB.database_func import saveInventory
+        saveInventory(profile=player)
             
 
 
@@ -92,13 +91,13 @@ class Inventory:
         
         item: Item object 
 
-        Return: True if it found the item in inventory AND the index (None if False)
+        Return: The index (None if False)
         '''
 
         for i in self.inv:
             if i['item'].item_id == item.item_id and i['item'].condition == item.condition:
-                return True, self.inv.index(i)
-            return False, None
+                return self.inv.index(i)
+        return None
 
     
     def nbItem(self, item: Item):

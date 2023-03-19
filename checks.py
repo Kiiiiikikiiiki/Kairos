@@ -21,4 +21,17 @@ def check_doing_something():
         else:
             return True
     return commands.check(predicate)
+
+
+def check_player_exist():
+    '''
+    Check if the player has a account created.  
+    '''
+
+    async def predicate(ctx):
+        if str(ctx.author.id) in PROFILE_DICT.keys():
+            return True
+        await ctx.respond(f'{ctx.author.name} please create a account first using **/create**')
+        return False
+    return commands.check(predicate)
             

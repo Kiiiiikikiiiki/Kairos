@@ -38,12 +38,12 @@ class Profile:
 
     def getGearsInInv(self):
         '''
-        Return a list of gears name that the player has in is inventory
+        Return a list of gears name, index and description that the player has in is inventory
         '''
         gearsList: list[str] = []
         for i in [i['item'] for i in self.inventory.inv]:
             if i.is_armor:
-                gearsList.append(i.name)
+                gearsList.append((i.name, self.inventory.find_item(i), i.desc))
         return gearsList
 
     def getGears(self):
@@ -79,12 +79,12 @@ class Profile:
 
     def getEquipmentInInv(self):
         '''
-        Return a list of equipment name that the player has in is inventory
+        Return a list of equipment name, index and description that the player has in is inventory
         '''
         equipmentsList: list[str] = []
         for i in [i['item'] for i in self.inventory.inv]:
             if i.is_tool:
-                equipmentsList.append(i.name)
+                equipmentsList.append((i.name, self.inventory.find_item(i), i.desc))
         return equipmentsList
 
     def resetCurrentAction(self):

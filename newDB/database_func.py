@@ -74,6 +74,24 @@ CREATE_PLAYER = """ CREATE TABLE IF NOT EXISTS players(
 """
 
 # Serialisation
+def savePlayer(profile: player.Profile):
+    conn = sqlite3.connect(f'{folder_before}newDB/players.db')
+
+    cur = conn.cursor()
+
+    # Delete old player data IF existed before
+    cur.execute(f'DELETE FROM players WHERE playerID={profile.profile_id};')
+
+    # Insert new player data
+    activeQuest = ','.join(profile.active_quest) # Listing the active quest in a string to save the data
+    requirements = ','.join(profile.requirement) # Listing the requirements in a string to save the data
+
+    cur.execute(f'INSERT INTO players VALUES(?, ?, ?, ?, ?, ?, ?);', [profile.profile_id, profile.name, profile.money, profile.location,
+     profile.guild, activeQuest, requirements])
+
+    conn.commit()
+
+
 def savePlayers(player_list: list[player.Profile]):
     conn = sqlite3.connect(f"{folder_before}newDB/players.db")
 

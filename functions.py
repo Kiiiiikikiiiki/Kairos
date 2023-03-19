@@ -72,23 +72,23 @@ def Equipment_Gears_Action(plyer: player.Profile, ctx: discord.ext.commands.Cont
             self.isRemove = isRemove
 
         async def callback(self, interaction: Interaction):
-            print(self.values[0])
-            itemName = self.values[0]   # get the choice made
-            print(itemName)
             newContent: str = ""
             selectItem: items.Item = None
-            for i in const.ITEMS_DICT.values():
-                print(i.name)
-                if i.simple_name == itemName:
-                    selectItem = i
-                    # break
+            if self.values[0].isdigit() is False:
+                itemName = self.values[0]
+                for i in const.ITEMS_DICT.values():
+                    if i.simple_name == itemName:
+                        selectItem = i
+                        break
+            else:
+                selectItem = self.player.inventory.inv[int(self.values[0])]['item']
 
             # Actions to make
             if self.isGears:
                 if self.isRemove:
                     removeItem = self.player.p_gears.remove(
                         selectItem.armor.type)
-                    self.player.inventory.add_items([{'item': removeItem, 'nb': 1}])
+                    self.player.inventory.add_items([{'item': removeItem, 'nb': 1}], self.player)
                     newContent = f"**{selectItem.name}** has been added to your inventory!"
                 else:
                     replaceItem: items.Item = None
@@ -98,29 +98,29 @@ def Equipment_Gears_Action(plyer: player.Profile, ctx: discord.ext.commands.Cont
                             break
                     removeItem = self.player.p_gears.replace(
                         replaceItem, replaceItem.armor.type)
-                    self.player.inventory.remove_items([{'item': replaceItem, 'nb': 1}])
+                    self.player.inventory.remove_items([{'item': replaceItem, 'nb': 1}], self.player)
                     newContent = f"**{selectItem.name}** has been added to your gears!"
                     if not removeItem.item_id == items.noneItem.item_id:
-                        self.player.inventory.add_items([{'item': removeItem, 'nb': 1}])
+                        self.player.inventory.add_items([{'item': removeItem, 'nb': 1}], self.player)
                         newContent += f"\n**{removeItem.name}** has been added to your inventory!"
             else:
                 if self.isRemove:
                     removeItem = self.player.p_equipment.remove(
                         selectItem.tool.type)
-                    self.player.inventory.add_items([{'item': removeItem, 'nb': 1}])
+                    self.player.inventory.add_items([{'item': removeItem, 'nb': 1}], self.player)
                     newContent = f"**{selectItem.name}** has been added to your inventory!"
                 else:
                     replaceItem: items.Item = None
                     for i in [i['item'] for i in self.player.inventory.inv]:
-                        if i.name == selectItem.name:
+                        if i.simple_name == selectItem.simple_name:
                             replaceItem = i
                             break
                     removeItem = self.player.p_equipment.replace(
                         replaceItem, replaceItem.tool.type)
-                    self.player.inventory.remove_items([{'item': replaceItem, 'nb': 1}])
+                    self.player.inventory.remove_items([{'item': replaceItem, 'nb': 1}], self.player)
                     newContent = f"**{selectItem.name}** has been added to your equipments!"
                     if not removeItem.item_id == items.noneItem.item_id:
-                        self.player.inventory.add_items([{'item': removeItem, 'nb': 1}])
+                        self.player.inventory.add_items([{'item': removeItem, 'nb': 1}], self.player)
                         newContent += f"\n**{removeItem.name}** has been added to your inventory!"
 
             # /*/**/*/*/*/*/*/*/*/*/*/*/*/*/**/*/*/*/*/*//*//
@@ -149,13 +149,15 @@ def Equipment_Gears_Action(plyer: player.Profile, ctx: discord.ext.commands.Cont
             listOfChoice = plyer.getEquipmentInInv()
 
     # Add the option in the dropdown menu
-    # List of values so we dont offer the same item more then once.
-    valuesList = []
     for i in listOfChoice:
-        if i != f"{items.noneItem.name}" and i.replace(i[0], "") not in valuesList:
-            label = i.replace(i[0], "")
-            dropDown.add_option(label=label, emoji=i[0])
-            valuesList.append(label)
+        if isRemove:
+            if i != f"{items.noneItem.name}":
+                label = i.replace(i[0], "")
+                dropDown.add_option(label=label, emoji=i[0])
+        else:
+            label = i[0].replace(i[0][0], "")
+            dropDown.add_option(label=label, emoji=i[0][0], value=str(i[1]), description=i[2])
+        # valuesList.append(label)
 
     view.add_item(dropDown)
     return view
@@ -246,7 +248,7 @@ def getCurrentActionView(as_reward: bool, as_action: bool, player: player.Profil
 
                     for item, nb in cleanItems:   # v1 = item object, v2 = nb of that item
                         # Add the item to the player inevntory
-                        player.inventory.add_items([{'item': item, 'nb': nb}])
+                        player.inventory.add_items([{'item': item, 'nb': nb}], player=player)
                         content += f"\n**{item.name} x{nb}** has been added to your inventory!"
 
                     # Experience reward text & player receiving their xp rewards
@@ -334,6 +336,19 @@ def skillProgress(current_exp: int, next_levl_exp: int):
         cpt += 1
     
     return text
+
+
+def get_item_dict(itemId: str, itemNb: int):
+    '''
+    Return the dict format to add or remove item from an inventory
+
+    Parameter
+    ---------
+    itemId : Item Id 
+    itemNb : Number of that item 
+    '''
+    item = getItem(itemId=itemId)
+    return {'item': item, 'nb': itemNb}
 
 ###################################################################
 # CHECK FUNCTIONS   # DO NOT USE THIS !! PLEASE NOW USE THE FILE FOR CHECKS <3

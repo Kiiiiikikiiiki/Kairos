@@ -29,15 +29,15 @@ bot = discord.Bot()
 
 
 config = dotenv_values(find_dotenv())
-# /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
-# /*/*/*/*/*/*/*/*/*/*/*/*/*/*/ BOT EVENTS /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
+#! /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
+#! /*/*/*/*/*/*/*/*/*/*/*/*/*/*/ BOT EVENTS /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
 
 
 @bot.event
 async def on_ready():
     channel = bot.get_channel(933532273825968242)
     # Here we deserialize everything that need to be put in constant
-    db_func.deserialize_profile()
+    # db_func.deserialize_profile()
     # Up and running baby
     await channel.send('***Kairos is Up and Running!***')
 
@@ -66,8 +66,8 @@ async def on_application_command_error(ctx, error):
     else:
         raise error
 
-# /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
-# /*/*/*/*/*/*/*/*/*/*/*/*/*/*/ BOT CHECKS /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
+#! /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
+#! /*/*/*/*/*/*/*/*/*/*/*/*/*/*/ BOT CHECKS /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
 def is_guild_admin():
     async def predicate(ctx):
         if ctx.author.id not in [221689857985085440]:
@@ -103,17 +103,20 @@ def has_equip_on_him(ctx):
             cpt += 1
     return cpt != 0
 
-# /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
-# /*/*/*/*/*/*/*/*/*/*/*/*/*/*/ BOT COMMANDS /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
+#! /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
+#! /*/*/*/*/*/*/*/*/*/*/*/*/*/*/ BOT COMMANDS /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
 
 
 # /*/*/*/*/*/*/*/*/*/*/*/**/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
 # /*/*/*/*/*/*/*/*/*/*/*/*/*/*/ TEST AREA /*/*/*/*/*/*/*/*/*/*/*/
 @bot.slash_command(guild_ids=[933532273825968239])
+@checks.check_player_exist()
 async def type_v(ctx):
     await ctx.respond(f"{type(discord.Colour(0xff0000))}")
-    # plyer: player.Profile = const.PROFILE_DICT[f'{ctx.author.id}']
-    # plyer.inventory.inv.append(const.ITEMS_DICT['0001'])
+    plyer: player.Profile = const.PROFILE_DICT[f'{ctx.author.id}']
+    # Add the item
+    plyer.inventory.add_items([functions.get_item_dict('0001', 1), functions.get_item_dict('0002', 2), functions.get_item_dict('0003', 3),
+     functions.get_item_dict('0010', 1)], player=plyer)
     # plyer.inventory.inv.append(const.ITEMS_DICT['0002'])
     # plyer.inventory.inv.append(const.ITEMS_DICT['0002'])
     # plyer.inventory.inv.append(const.ITEMS_DICT['0003'])
@@ -139,12 +142,12 @@ async def test(ctx):
     # await ctx.delete()  # delete make it that we dont need a respond
 
 
-# /*/*///*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/**/*/*/
-# /*/*/*/*/*/*/*/*/*/*/*/*/*/*/ REAL COMMAND AREA /*/*/*/*/*/*/*/*/
+#! /*/*///*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/**/*/*/
+#! /*/*/*/*/*/*/*/*/*/*/*/*/*/*/ REAL COMMAND AREA /*/*/*/*/*/*/*/*/
 
 
-# /*/*/*/*/*/*/*/*/*/*/*/**/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
-# /*/*/*/*/*/ Admins Command /*/*/*/*/*/*/*/*/*/*/*/
+#! /*/*/*/*/*/*/*/*/*/*/*/**/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
+#! /*/*/*/*/*/ Admins Command /*/*/*/*/*/*/*/*/*/*/*/
 @bot.slash_command(name="close", guild_ids=[933532273825968239], description="Close the bot")
 @is_guild_admin()
 async def botclose(ctx):
@@ -156,8 +159,8 @@ async def botclose(ctx):
 async def give(ctx, user: discord.User, item_id: str, nb_of_item):
     pass
 
-# /*/*/*/*/*/*/*/*/*/*/*/**/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
-# /*/*/*/*/*/ Guild Group Command /*/*/*/*/*/*/*/*/*/*/*/
+# ! /*/*/*/*/*/*/*/*/*/*/*/**/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
+# ! /*/*/*/*/*/ Guild Group Command /*/*/*/*/*/*/*/*/*/*/*/
 
 clan = SlashCommandGroup(
     "guild", "Everything to manage and interact with your guild")
@@ -178,14 +181,15 @@ async def create_guild(ctx,
     await ctx.respond(embed=embeds.simple_reponse(f"Guild **{guild_name}** created successfully!"))
 
 
-# /*/*/*/*/*/*/*/*/*/*/*/**/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
-# /*/*/*/*/* Inv Group Command /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
+#! /*/*/*/*/*/*/*/*/*/*/*/**/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
+#! /*/*/*/*/* Inv Group Command /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
 
 inv = SlashCommandGroup(
     "inv", "Everything to manage and interact with your inventory")
 
 
 @inv.command(name='see', guild_ids=[933532273825968239], description="Check your inventory")
+@checks.check_player_exist()
 async def see_inv(ctx):
     plyer: player.Profile = const.PROFILE_DICT[f'{ctx.author.id}']
     # Receive the items and usables items in a custom string to be displayed
@@ -200,8 +204,22 @@ async def see_inv(ctx):
     await ctx.respond(embed=invEmbed)
 
 
-# /*/*/*/*/*/*/*/*/*/*/*/**/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
-# /*/*/*/*/* Profile Command /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
+#! /*/*/*/*/*/*/*/*/*/*/*/**/*/*/*/*/*/*/**/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/*
+#! /*/*/*/*/* Profile Command /*/*/*/*/*/*/*/*/*/*/*/*/*/*/*/
+
+@bot.slash_command(name='create', guild_ids=[933532273825968239], description='Create a account')
+async def create(ctx):
+    if str(ctx.author.id) not in const.PROFILE_DICT.keys():
+        newProfile = player.Profile(ctx.user.name, ctx.user.id)
+        const.PROFILE_DICT[f'{ctx.user.id}'] = newProfile
+        await ctx.respond(f'Account successfully created! *Enjoy the game {ctx.author.name}*')
+        # Save the player 
+        database_func.savePlayer(newProfile)
+    else:
+        await ctx.respond(f'You already have an account created', ephemeral=True)
+
+
+
 class EmbedButton(Button):
     def __init__(self, label, embed: Embed, ctx: discord.ext.commands.Context):
         super().__init__(style=discord.ButtonStyle.green, label=label)
@@ -223,6 +241,7 @@ class ProfileView(View):
 
 
 @bot.slash_command(name="profile", guild_ids=[933532273825968239], description="Check your profile")
+@checks.check_player_exist()
 async def see_profile(ctx):
     plyer: player.Profile = const.PROFILE_DICT[f'{ctx.author.id}']
     profileEmbed = embeds.getProfileEmbed(ctx, plyer)
@@ -252,6 +271,7 @@ async def see_profile(ctx):
 
 
 @bot.slash_command(name="gears", guild_ids=[933532273825968239], description="Interact with your gears")
+@checks.check_player_exist()
 async def gearsInteraction(ctx,
                            action: Option(str, "the action to do", choices=["equip", "remove"])):
     isRemove = True
@@ -276,6 +296,7 @@ async def gearsInteraction(ctx,
 
 
 @bot.slash_command(name="equipments", guild_ids=[933532273825968239], description="Interact with your equipments")
+@checks.check_player_exist()
 async def equipmentsInteraction(ctx,
                                 action: Option(str, "the action to do", choices=["equip", "remove"])):
     isRemove = True
@@ -300,6 +321,7 @@ async def equipmentsInteraction(ctx,
 
 
 @bot.slash_command(name="me", guild_ids=[933532273825968239], description="Know what you are currently doing")
+@checks.check_player_exist()
 async def whatThePlayerIsDoing(ctx):
     plyer: player.Profile = const.PROFILE_DICT[f'{ctx.author.id}']
     # If the player action will reward him with rewards
