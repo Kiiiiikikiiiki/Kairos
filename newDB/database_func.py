@@ -1,65 +1,41 @@
 import sqlite3
 import playerFiles.player as player, playerFiles.inventory as inventory, items, functions
 import constant as const
-import copy
 
-# Testing if we can construct a database sqlite format for this game
-# This file is to test sqlite querries and to learn how to use it properly. 
- 
 
-# tuto link : 
 
-# Creating a connection
-conn = sqlite3.connect('newDB/database.db')
-
-# Creating  the cursor
-cur = conn.cursor()
-
-# Executing querries 
-
-# for the player table there is some variables (mostly list and dictionnary variable type) that will have there own table
-# and so to retrieve those variable we will need to access to table to that variable and fetch all the rows with the same playerID. 
-
-# Main player table
-cur.execute(""" CREATE TABLE IF NOT EXISTS players(
-    playerID INT PRIMARY KEY,
-    name TEXT,
-    money DOUBLE,
-    location TEXT,
-    guild TEXT,
-    active_quest TEXT,
-    requirement MEDIUMTEXT
-);
-""")
-
-# For the inventory of each player we will need to create a new table in another database file (inventory.db) for each player 
-# and the name of the table will be the playerID and inside will be all the item the player got. 
-# SAME FOR GEARS 
-# SAME FOR EQUIPMENTS
-# SAME FOR EXPERIENCE
-
-# Sub variable in player data
-
-# Current action var 
-# itemRewards and xpRewards will be saved in other database where the table name of each will be the player id
-cur.execute(f""" CREATE TABLE IF NOT EXISTS current_action(
-    compteur INT PRIMARY KEY,
-    playerID INT,
-    action TEXT,
-    finish_time DATETIME
-);
-""")
-
-# cur.execute("INSERT INTO players VALUES(?, ?, ?, ?, ?, ?, ?);", [12763713913782734, "test", 34, "testlocation", "solo", "1,2,6", "None"])
-
-cur.execute("SELECT * FROM players;")
-result = cur.fetchone()
-print(result)
-
-conn.commit()
-
-# No more testing here
 folder_before = ""
+
+#? Creating for the first time some table
+# conn = sqlite3.connect(f'{folder_before}newDB/actions.db')
+# cur = conn.cursor()
+
+# cur.execute(""" CREATE TABLE actions(
+#     playerID INT PRIMARY KEY,
+#     actionName TEXT,
+#     finishTime DATETIME,
+#     moneyReward INT,
+#     requirementReward TEXT
+# ); """)
+
+# cur.execute(""" CREATE TABLE itemRewards(
+#     playerID INT PRIMARY KEY,
+#     itemID TEXT,
+#     condition TINYTEXT,
+#     nb INT,
+#     modifier TEXT
+# ); """)
+
+
+# cur.execute(""" CREATE TABLE xpRewards(
+#     playerID INT PRIMARY KEY,
+#     nb INT,
+#     type TINYTEXT
+# ); """)
+
+# conn.commit()
+
+#?
 
 # Constant querries
 CREATE_PLAYER = """ CREATE TABLE IF NOT EXISTS players(
@@ -73,7 +49,7 @@ CREATE_PLAYER = """ CREATE TABLE IF NOT EXISTS players(
 );
 """
 
-# Serialisation
+#! Serialisation
 def savePlayer(profile: player.Profile):
     conn = sqlite3.connect(f'{folder_before}newDB/players.db')
 
@@ -140,8 +116,18 @@ def saveInventory(profile: player.Profile):
     conn.commit()
 
 
+def saveAction(profile: player.Profile):
+    # Getting the connection and cursor
+    conn = sqlite3.connect(f'{folder_before}newDB/actions.db')
+    cur = conn.cursor()
 
-# Deserialisation
+    # Delete old player action data IF existed
+    
+
+
+
+#! Deserialisation
+#? #FIXME we need to remake everything here 
 def loadPlayer():
     conn = sqlite3.connect(f"{folder_before}newDB/players.db")
 

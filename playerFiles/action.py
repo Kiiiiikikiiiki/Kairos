@@ -1,4 +1,5 @@
 from datetime import datetime
+from functions import get_timeUntilReady
 
 
 
@@ -30,4 +31,40 @@ class CurrentAction:
 
     
     def reset(self):
+        '''
+        reset all the parameters to their default values
+        '''
+
+        self.actionName         = None
+        self.finishTime         = None
+        self.itemReward         = None
+        self.xpReward           = None
+        self.moneyReward        = None
+        self. requirementReward = None
+
+        #TODO Save Action class in database
+
+
+    def checkAction(self):
+        '''
+        Check if the action is over and return the time remaining if not done in string format
+
+        Return : bool , timedelta
+        '''
+        remainingTime = get_timeUntilReady(readyTime=self.finishTime)
+        if remainingTime == "0:00:00:000000":
+            return True, "0:00:00:000000"
+        return False, str(remainingTime)[:-7]
+    
+
+    def save(self):
+        '''
+        After each time a attribute is modified this method should be called
+
+        save the player action in the database
+        '''
         pass
+
+    
+    
+
