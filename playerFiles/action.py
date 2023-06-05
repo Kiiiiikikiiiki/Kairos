@@ -40,7 +40,7 @@ class CurrentAction:
         self.itemReward         = None
         self.xpReward           = None
         self.moneyReward        = None
-        self. requirementReward = None
+        self.requirementReward  = None
 
         #TODO Save Action class in database
 

@@ -122,6 +122,17 @@ def saveAction(profile: player.Profile):
     cur = conn.cursor()
 
     # Delete old player action data IF existed
+
+    # Insert new action data from the player
+
+    # ACTION TABLE 
+    cur.execute(f"INSERT INTO action VALUES(?, ?, ?, ?, ?);", profile.profile_id)
+
+    # ITEM REWARD TABLE
+    cur.execute(f"INSERT INTO itemRewards VALUES(?, ?, ?, ?, ?);", profile.profile_id)
+
+    # XP REWARD TABLE
+    cur.execute(f"INSERT INTO xpRewards VALUES(?, ?, ?);", profile.profile_id)
     
 
 
